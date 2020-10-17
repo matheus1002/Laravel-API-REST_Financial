@@ -62,4 +62,11 @@ class TransactionTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function testStatistics()
+    {
+        $response = $this->getJson('/api/transactions/statistics');
+
+        $response->assertStatus(200);
+    }
 }
