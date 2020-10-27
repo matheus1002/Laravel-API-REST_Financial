@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'API'], function(){
 
-    Route::get('authorized', 'AuthController@authorized')->name('authorized');
+    Route::get('unauthorized', 'AuthController@unauthorized')->name('unauthorized');
     Route::post('register', 'AuthController@register')->name('register');
     Route::match(['get', 'post'],'login', 'AuthController@login')->name('login');
 

@@ -71,7 +71,7 @@ class AuthController extends Controller
         return response()->json(auth('api')->user());
     }
 
-    public function authorized()
+    public function unauthorized()
     {
         return response([
             'message' => "Acesso negado! Você precisa estar logado para realizar esta operação!",
