@@ -14,9 +14,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::group(['namespace' => 'API'], function(){
+
+    Route::get('authorized', 'AuthController@authorized')->name('authorized');
+    Route::post('register', 'AuthController@register')->name('register');
+    Route::match(['get', 'post'],'login', 'AuthController@login')->name('login');
+
+    Route::group(['middleware' => ['auth:api']], function (){
+
+        Route::post('me', 'AuthController@me')->name('me');
+        Route::post('logout', 'AuthController@logout')->name('logout');
+
+        Route::get('transactions/statistics', 'TransactionController@statistics');
+        Route::apiResource('transactions', 'TransactionController');
+    });
 });
 
-Route::get('transactions/statistics', 'API\TransactionController@statistics');
-Route::apiResource('transactions', 'API\TransactionController');
+
+
+
+
+
