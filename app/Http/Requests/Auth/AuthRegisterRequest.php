@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Transaction;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class TransactionCreateRequest extends FormRequest
+class AuthRegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class TransactionCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -25,10 +24,9 @@ class TransactionCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'nsu' => ['required','integer'],
-            'authorizationNumber' => ['required','numeric'],
-            'amount' => ['required','numeric'],
-            'type' => ['required'],
+            'name' => 'required|max:55',
+            'email' => 'email|required|unique:users',
+            'password' => 'required|confirmed'
         ];
     }
 }
