@@ -22,7 +22,7 @@ Route::group(['namespace' => 'API'], function(){
 
     Route::get('authorized', 'AuthController@authorized')->name('authorized');
     Route::post('register', 'AuthController@register')->name('register');
-    Route::match(['get', 'post'],'login', 'AuthController@login')->name('login');
+    Route::post('login', 'AuthController@login')->name('login');
 
     Route::group(['middleware' => ['auth:api']], function (){
 
