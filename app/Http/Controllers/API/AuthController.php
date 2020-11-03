@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\AuthLoginRequest;
-use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,10 +10,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    public function register(AuthRegisterRequest $request)
+    public function register(Request $request)
     {
-        $user = User::create($request->input());
-        $user->password = bcrypt($request->password);
+        $validateData = $request->validate([
+            'name' => 'required|max:55',
+            'email' => 'email|required|unique:users',
+            'password' => 'required|confirmed'
+        ]);
+
+        $validateData['password'] = bcrypt($request->password);
+
+        $user = User::create($validateData);
+
         $accessToken = $user->createToken('authToken')->accessToken;
 
         return response([
@@ -26,9 +32,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(AuthLoginRequest $request)
+    public function login(Request $request)
     {
-        $loginData = $request->except(['name']);
+        $loginData = $request->validate([
+            'email' => 'email|required',
+            'password' => 'required'
+        ]);
 
         if (!auth()->attempt($loginData)){
             return response([
