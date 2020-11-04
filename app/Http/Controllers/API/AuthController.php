@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validateData = $request->validate([
-            'name' => 'required|max:55',
+            'name' => 'required|min:3|max:55',
             'email' => 'email|required|unique:users',
             'password' => 'required|confirmed'
         ]);
@@ -24,7 +24,7 @@ class AuthController extends Controller
         $accessToken = $user->createToken('authToken')->accessToken;
 
         return response([
-            'user' => $user,
+            //'user' => $user,
             'access_token' => $accessToken,
             'message' => "registro realizado com sucesso!",
             'status' => Response::HTTP_OK
@@ -70,11 +70,11 @@ class AuthController extends Controller
         return response()->json(auth('api')->user());
     }
 
-    public function authorized()
-    {
-        return response([
-            'message' => "Acesso negado! Você precisa estar logado para realizar esta operação!",
-            'status' => Response::HTTP_UNAUTHORIZED
-        ]);
-    }
+//    public function authorized()
+//    {
+//        return response([
+//            'message' => "Acesso negado! Você precisa estar logado para realizar esta operação!",
+//            'status' => Response::HTTP_UNAUTHORIZED
+//        ]);
+//    }
 }
